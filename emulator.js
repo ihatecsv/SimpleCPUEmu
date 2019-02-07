@@ -66,6 +66,11 @@ let clearConsole = function(){
 	$("#console").val("");
 }
 
+let simulateFlow = function(n) {
+    //return (((n%0xff)+0xff)%0xff)+1;
+	return n;
+};
+
 let processInstruction = function(instruction){
 	const opCode = (instruction >> 12) & 0xf;
 	const reg1 = (instruction >> 8) & 0xf;
@@ -96,11 +101,11 @@ let processInstruction = function(instruction){
 			break;
 		case 4: //add
 			console.log("add");
-			register[reg3] = register[reg1] + register[reg2];
+			register[reg3] = simulateFlow(register[reg1] + register[reg2]);
 			break;
 		case 5: //subt
 			console.log("subt");
-			register[reg3] = register[reg1] - register[reg2];
+			register[reg3] = simulateFlow(register[reg1] - register[reg2]);
 			break;
 		case 6: //jz
 			console.log("jz");
