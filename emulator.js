@@ -1,3 +1,5 @@
+// This is quick and dirty, going to try and clean it up
+
 const memoryLocationCount = 256;
 const registerCount = 16;
 
