@@ -10,35 +10,41 @@
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<div class="container-fluid">
+		<div class="container">
 			<div class="row">
 				<div class="col-4">
 					<h1>Setup</h1>
-					<textarea id="procedure" rows=16>3000
-							3101
-							3234
-							3301
-							1032
-							1133
-							1164
-							4100
-							0064
-							2210
-							4230
-							043B
-							6406
-							7032
-							7033
-							7034
-							7035
-							7036
-							7037
-							7038
-							7039
-							703A
-							703B
-							F000</textarea>
-					<button id="loadbutton">Load</button>
+					<textarea id="procedure" rows=16></textarea>
+					<button id="openInstructionCreator">Open inst. creator</button>
+					<form id="createInstructionForm" class="createInstructionForm", style="display:none;">
+						Instruction: 
+						<select id="createInstructionOp">
+							<option value="mov1">mov1</option>
+							<option value="mov2">mov2</option>
+							<option value="mov3">mov3</option>
+							<option value="mov4">mov4</option>
+							<option value="add">add</option>
+							<option value="subt">subt</option>
+							<option value="jz">jz</option>
+							<option value="readm">readm</option>
+							<option value="halt">halt</option>
+						</select>
+						<br/>
+						<span id="createInstructionContext1"></span>
+						<select id="createInstructionRegister1"></select>
+						<span id="createInstructionContext2"></span>
+						<select id="createInstructionRegister2"></select>
+						<span id="createInstructionContext3"></span>
+						<select id="createInstructionRegister3"></select>
+						<span id="createInstructionContext4"></span>
+						<select id="createInstructionImm"></select>
+						<span id="createInstructionContext5"></span>
+						<br/>
+						<button type="button" id="addInstruction">Add instruction</button>
+						<button type="button" id="cancelInstruction">Hide</button>
+					</form>
+					<br/>
+					<button id="loadbutton">Load and reset</button>
 					<button id="runbutton">Run</button>
 					<button id="stepbutton">Step</button>
 				</div>

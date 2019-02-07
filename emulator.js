@@ -8,6 +8,15 @@ let register = [];
 let pc = 0;
 let running = false;
 
+//Add hex to register constructor tables
+for(let i = 0; i < 256; i++){
+	if(i < 16){
+		for(let j = 1; j <= 3; j++){
+			$("#createInstructionRegister" + j).append("<option value=\"" + i.toString(16) + "\">" + i.toString(16) + "</option>");
+		}
+	}
+	$("#createInstructionImm").append("<option value=\"" + i.toString(16) + "\">" + i.toString(16) + "</option>");
+}
 
 for(let i = 0; i < memoryLocationCount; i++){
 	memory[i] = 0;
@@ -87,7 +96,7 @@ let processInstruction = function(instruction){
 			break;
 		case 6: //jz
 			console.log("jz");
-			if(register[reg1] == 0) pc = imm - 1;
+			if(register[reg1] == 0) pc = imm;
 			break;
 		case 7: //readm
 			console.log("readm");
@@ -112,11 +121,15 @@ $("#loadbutton").on("click", function() {
 	zeroRegisters();
 	const procedureStrings = $("#procedure").val().split("\n");
 	for(let i = 0; i < procedureStrings.length; i++){
-		memory[i] = parseInt(procedureStrings[i], 16);
+		const memVal = parseInt(procedureStrings[i], 16);
+		memory[i] = !isNaN(memVal) ? memVal : 0;
 	}
 	pc = 0;
 	updateRegisters();
 	updateMemory();
+	console.log("================");
+	console.log("LOADED NEW MEMORY");
+	console.log("================");
 });
 
 $("#runbutton").on("click", function() {
@@ -129,7 +142,9 @@ $("#runbutton").on("click", function() {
 	}
 	updateRegisters();
 	updateMemory();
-	console.log("Stopped!");
+	console.log("================");
+	console.log("STOPPED");
+	console.log("================");
 });
 
 $("#stepbutton").on("click", function() {
@@ -138,8 +153,140 @@ $("#stepbutton").on("click", function() {
 	}
 	if(running){
 		processInstruction(memory[pc]);
-		pc++;
 		updateRegisters();
 		updateMemory();
 	}
+});
+
+let setBoxesVisibleArray = function(showArray){
+	let showingBoxes = [
+		"createInstructionRegister1",
+		"createInstructionRegister2",
+		"createInstructionRegister3",
+		"createInstructionImm"
+	]
+	if(showArray.length != showingBoxes.length) console.error("How are you hiding these boxes dude?");
+	for(let i = 0; i < showingBoxes.length; i++){
+		if(showArray[i]){
+			$("#" + showingBoxes[i]).show();
+		}else{
+			$("#" + showingBoxes[i]).hide();
+		}
+	}
+}
+
+let setArrowsVisibleArray = function(showArray){
+	if(showArray.length != 5) console.error("How are you setting these arrows dude?");
+	for(let i = 0; i < 5; i++){
+		$("#createInstructionContext" + (i + 1)).html(showArray[i]);
+	}
+}
+
+let updateVisElements = function() {
+	const op = $("#createInstructionOp option:selected").text();
+	
+	switch(op){
+		case "mov1":
+			setBoxesVisibleArray([1, 0, 0, 1]);
+			setArrowsVisibleArray(["RF[", "]", "", "<=mem[", "]"]);
+			break;
+		case "mov2":
+			setBoxesVisibleArray([1, 0, 0, 1]);
+			setArrowsVisibleArray(["RF[", "]", "", "=>mem[", "]"]);
+			break;
+		case "mov3":
+			setBoxesVisibleArray([1, 1, 0, 0]);
+			setArrowsVisibleArray(["mem[RF[", "]]<=RF[", "]", "", ""]);
+			break;
+		case "mov4":
+			setBoxesVisibleArray([1, 0, 0, 1]);
+			setArrowsVisibleArray(["RF[", "]", "", "<=", ""]);
+			break;
+		case "add":
+			setBoxesVisibleArray([1, 1, 1, 0]);
+			setArrowsVisibleArray(["RF[", "]+RF[", "]=>RF[", "]", ""]);
+			break;
+		case "subt":
+			setBoxesVisibleArray([1, 1, 1, 0]);
+			setArrowsVisibleArray(["RF[", "]-RF[", "]=>RF[", "]", ""]);
+			break;
+		case "jz":
+			setBoxesVisibleArray([1, 0, 0, 1]);
+			setArrowsVisibleArray(["if RF[", "]=0", "", ", pc=", ""]);
+			break;
+		case "readm":
+			setBoxesVisibleArray([0, 0, 0, 1]);
+			setArrowsVisibleArray(["out<=", "", "", "mem[", "]"]);
+			break;
+		case "halt":
+			setBoxesVisibleArray([0, 0, 0, 0]);
+			setArrowsVisibleArray(["", "", "", "", ""]);
+			break;
+		default:
+			setBoxesVisibleArray([1, 1, 1, 1]);
+			setArrowsVisibleArray(["", "", "", "", ""]);
+	}
+}
+
+$("#createInstructionForm").on("change", updateVisElements);
+
+$("#openInstructionCreator").on("click", function(){
+	$("#createInstructionForm").show();
+	$("#openInstructionCreator").hide();
+	updateVisElements();
+});
+
+let pushNewInstruction = function(instructionString){
+	const textArea = $("#procedure");
+	const needsNewLine = textArea.val() != "" && textArea.val().substr(-1) != "\n";
+	textArea.val(textArea.val() + (needsNewLine ? "\n" : "") + instructionString + "\n");
+}
+
+$("#cancelInstruction").on("click", function(){
+	$("#createInstructionForm").hide();
+	$("#openInstructionCreator").show();
+});
+
+$("#addInstruction").on("click", function(){
+	const op = $("#createInstructionOp option:selected").text();
+	const reg1 = $("#createInstructionRegister1 option:selected").text().toUpperCase();
+	const reg2 = $("#createInstructionRegister2 option:selected").text().toUpperCase();
+	const reg3 = $("#createInstructionRegister3 option:selected").text().toUpperCase();
+	const imm = ("00" + $("#createInstructionImm option:selected").text().toUpperCase()).substr(-2);
+
+	switch(op){
+		case "mov1":
+			pushNewInstruction("0" + reg1 + imm);
+			break;
+		case "mov2":
+			pushNewInstruction("1" + reg1 + imm);
+			break;
+		case "mov3":
+			pushNewInstruction("2" + reg1 + reg2 + "0");
+			break;
+		case "mov4":
+			pushNewInstruction("3" + reg1 + imm);
+			break;
+		case "add":
+			pushNewInstruction("4" + reg1 + reg2 + reg3);
+			break;
+		case "subt":
+			pushNewInstruction("5" + reg1 + reg2 + reg3);
+			break;
+		case "jz":
+			pushNewInstruction("6" + reg1 + imm);
+			break;
+		case "readm":
+			pushNewInstruction("7" + "0" + imm);
+			break;
+		case "halt":
+			pushNewInstruction("F000");
+			break;
+		default:
+			console.error("Invalid instruction?");
+			break;
+	}
+	
+	$("#createInstructionForm").hide();
+	$("#openInstructionCreator").show();
 });

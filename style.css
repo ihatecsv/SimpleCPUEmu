@@ -5,3 +5,10 @@
 .pc{
 	color:red;
 }
+
+.createInstructionForm{
+	margin-top:20px;
+	background-color:#ccc;
+	border-style:dashed;
+	text-align:center;
+}
