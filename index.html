@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Example</title>
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-4">
+					<h1>Setup</h1>
+					<textarea id="procedure" rows=16>3000
+							3101
+							3234
+							3301
+							1032
+							1133
+							1164
+							4100
+							0064
+							2210
+							4230
+							043B
+							6406
+							7032
+							7033
+							7034
+							7035
+							7036
+							7037
+							7038
+							7039
+							703A
+							703B
+							F000</textarea>
+					<button id="loadbutton">Load</button>
+					<button id="runbutton">Run</button>
+					<button id="stepbutton">Step</button>
+				</div>
+				<div class="col-4">
+					<h1>Register explorer</h1>
+					<table class="table table-striped table-sm monotext" id="registerTable">
+						<tr>
+							<th>Register</th>
+							<th>Contents</th>
+						</tr>
+					</table>
+				</div>
+				<div class="col-4">
+					<h1>Memory explorer</h1>
+					<table class="table table-striped table-sm monotext" id="memoryTable">
+						<tr>
+							<th>Location</th>
+							<th>Contents</th>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+		<script src="emulator.js"></script>
+	</body>
+</html>
