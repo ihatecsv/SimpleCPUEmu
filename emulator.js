@@ -58,6 +58,14 @@ let zeroMemory = function(){
 	}
 }
 
+let addToConsole = function(newText){
+	$("#console").val($("#console").val() + newText + "\n");
+}
+
+let clearConsole = function(){
+	$("#console").val("");
+}
+
 let processInstruction = function(instruction){
 	const opCode = (instruction >> 12) & 0xf;
 	const reg1 = (instruction >> 8) & 0xf;
@@ -100,7 +108,7 @@ let processInstruction = function(instruction){
 			break;
 		case 7: //readm
 			console.log("readm");
-			alert(memory[imm]);
+			addToConsole(memory[imm]);
 			break;
 		case 15: //halt
 			console.log("halt");
@@ -117,6 +125,8 @@ zeroMemory();
 zeroRegisters();
 
 $("#loadbutton").on("click", function() {
+	clearConsole();
+	
 	zeroMemory();
 	zeroRegisters();
 	const procedureStrings = $("#procedure").val().split("\n");

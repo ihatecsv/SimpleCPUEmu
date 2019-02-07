@@ -13,13 +13,14 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-4">
-					<h1>Setup</h1>
+					<h1>ASM</h1>
 					<textarea id="procedure" rows=16></textarea>
 					<button id="openInstructionCreator">Open inst. creator</button>
 					<form id="createInstructionForm" class="createInstructionForm", style="display:none;">
 						Instruction: 
 						<select id="createInstructionOp">
 							<option value="mov1">mov1</option>
+							<option value="mov2">mov2</option>
 							<option value="mov2">mov2</option>
 							<option value="mov3">mov3</option>
 							<option value="mov4">mov4</option>
@@ -47,6 +48,10 @@
 					<button id="loadbutton">Load and reset</button>
 					<button id="runbutton">Run</button>
 					<button id="stepbutton">Step</button>
+					<br/><br/>
+					Console (readm)
+					<br/>
+					<textarea id="console" rows=8 readonly></textarea>
 				</div>
 				<div class="col-4">
 					<h1>Register explorer</h1>
