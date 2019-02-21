@@ -94,11 +94,11 @@ let noFlow = function(n) {
 };
 
 let unsigned16Flow = function(n) {
-	return (((n%0x100)+0x100)%0x100);
+	return (((n%0x10000)+0x10000)%0x10000);
 }
 
 let unsigned32Flow = function(n) {
-	return (((n%0x10000)+0x10000)%0x10000);
+	return (((n%0x100000000)+0x100000000)%0x100000000);
 }
 
 let flowFunc;
