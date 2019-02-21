@@ -182,11 +182,14 @@ $("#loadbutton").on("click", function() {
 
 $("#runbutton").on("click", function() {
 	zeroRegisters();
-	let count = 2048;
+	let count = 4096;
 	running = true;
 	while(running && count != 0){
 		processInstruction(memory[pc]);
 		count--;
+	}
+	if(count == 0){
+		alert("Hit OP limit!");
 	}
 	updateRegisters();
 	updateMemory();
