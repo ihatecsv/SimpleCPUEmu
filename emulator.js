@@ -103,8 +103,6 @@ let unsigned32Flow = function(n) {
 
 let flowFunc;
 
-$("#flowbehaviour").on("change", setFlow);
-
 let setFlow = function(){
 	const flowType = $("#flowbehaviour").val();
 	switch(flowType){
@@ -121,6 +119,8 @@ let setFlow = function(){
 }
 
 setFlow();
+
+$("#flowbehaviour").on("change", setFlow);
 
 let processInstruction = function(instruction){
 	const opCode = (instruction >> 12) & 0xf;
