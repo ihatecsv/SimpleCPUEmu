@@ -129,7 +129,6 @@ let processInstruction = function(instruction){
 			break;
 		case 11: //mov5
 			console.log("mov5");
-			alert(memory[register[reg1]]);
 			register[reg1] = memory[register[reg1]];
 			break;
 		case 15: //halt
