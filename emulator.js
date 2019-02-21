@@ -1,5 +1,8 @@
 // This is quick and dirty, going to try and clean it up
 
+$("#stepbutton").attr("disabled", true);
+$("#runbutton").attr("disabled", true);
+
 const memoryLocationCount = 256;
 const registerCount = 16;
 
@@ -134,6 +137,8 @@ let processInstruction = function(instruction){
 		case 15: //halt
 			console.log("halt");
 			running = false;
+			$("#stepbutton").attr("disabled", true);
+			$("#runbutton").attr("disabled", true);
 			break;
 		default: //nothing
 			console.log("nothing");
@@ -161,6 +166,8 @@ $("#loadbutton").on("click", function() {
 	console.log("================");
 	console.log("LOADED NEW MEMORY");
 	console.log("================");
+	$("#stepbutton").removeAttr("disabled");
+	$("#runbutton").removeAttr("disabled");
 });
 
 $("#runbutton").on("click", function() {
