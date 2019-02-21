@@ -1,5 +1,15 @@
 // This is quick and dirty, going to try and clean it up
 
+var procedureText = (new URL(location)).searchParams.get("procedure");
+if(procedureText != null){
+	$("#procedure").val(procedureText);
+}
+
+$("#procedure").on('input change', function(){
+	var newURL = location.href.split("?")[0] + "?procedure=" + encodeURIComponent($("#procedure").val());
+	history.replaceState({}, '', newURL);
+});
+
 $("#stepbutton").attr("disabled", true);
 $("#runbutton").attr("disabled", true);
 
