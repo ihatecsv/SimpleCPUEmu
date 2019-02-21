@@ -1,12 +1,22 @@
 // This is quick and dirty, going to try and clean it up
 
-var procedureText = (new URL(location)).searchParams.get("procedure");
-if(procedureText != null){
-	$("#procedure").val(procedureText);
+let presetFormFromURL = function(){
+	let procedureText = (new URL(location)).searchParams.get("procedure");
+	if(procedureText != null){
+		$("#procedure").val(procedureText);
+	}
+	
+	let flowSetting = (new URL(location)).searchParams.get("flow");
+	if(flowSetting != null){
+		$("#flowbehaviour").val(flowSetting);
+	}
 }
+presetFormFromURL();
 
-$("#procedure").on('input change', function(){
-	var newURL = location.href.split("?")[0] + "?procedure=" + encodeURIComponent($("#procedure").val());
+$("#ctrlpanel").on('input change', function(){
+	var newURL = location.href.split("?")[0];
+	newURL += "?procedure=" + encodeURIComponent($("#procedure").val());
+	newURL += "&flow=" + encodeURIComponent($("#flowbehaviour").val());
 	history.replaceState({}, '', newURL);
 });
 
@@ -79,10 +89,38 @@ let clearConsole = function(){
 	$("#console").val("");
 }
 
-let simulateFlow = function(n) {
-    //return (((n%0xff)+0xff)%0xff)+1;
+let noFlow = function(n) {
 	return n;
 };
+
+let unsigned16Flow = function(n) {
+	return (((n%0xff)+0xff)%0xff)+1;
+}
+
+let unsigned32Flow = function(n) {
+	return (((n%0xffff)+0xffff)%0xffff)+1;
+}
+
+let flowFunc;
+
+$("#flowbehaviour").on("change", setFlow);
+
+let setFlow = function(){
+	const flowType = $("#flowbehaviour").val();
+	switch(flowType){
+		case "noflow":
+			flowFunc = noFlow;
+			break;
+		case "16":
+			flowFunc = unsigned16Flow;
+			break;
+		case "32":
+			flowFunc = unsigned32Flow;
+			break;
+	}
+}
+
+setFlow();
 
 let processInstruction = function(instruction){
 	const opCode = (instruction >> 12) & 0xf;
@@ -114,11 +152,11 @@ let processInstruction = function(instruction){
 			break;
 		case 4: //add
 			console.log("add");
-			register[reg3] = simulateFlow(register[reg1] + register[reg2]);
+			register[reg3] = flowFunc(register[reg1] + register[reg2]);
 			break;
 		case 5: //subt
 			console.log("subt");
-			register[reg3] = simulateFlow(register[reg1] - register[reg2]);
+			register[reg3] = flowFunc(register[reg1] - register[reg2]);
 			break;
 		case 6: //jz
 			console.log("jz");
@@ -130,15 +168,15 @@ let processInstruction = function(instruction){
 			break;
 		case 8: //mult
 			console.log("mult");
-			register[reg3] = simulateFlow(register[reg1] * register[reg2]);
+			register[reg3] = flowFunc(register[reg1] * register[reg2]);
 			break;
 		case 9: //inc
 			console.log("inc");
-			register[reg1] = simulateFlow(register[reg1] + 1);
+			register[reg1] = flowFunc(register[reg1] + 1);
 			break;
 		case 10: //dec
 			console.log("dec");
-			register[reg1] = simulateFlow(register[reg1] - 1);
+			register[reg1] = flowFunc(register[reg1] - 1);
 			break;
 		case 11: //mov5
 			console.log("mov5");

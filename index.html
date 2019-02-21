@@ -12,7 +12,7 @@
 	<body>
 		<div class="container">
 			<div class="row">
-				<div class="col-4">
+				<div class="col-4" id="ctrlpanel">
 					<h1>ASM</h1>
 					<textarea id="procedure" rows=16>3000
 3101
@@ -87,6 +87,11 @@ F000</textarea>
 					<button id="loadbutton">Load and reset</button>
 					<button id="runbutton">Run</button>
 					<button id="stepbutton">Step</button>
+					<select id="flowbehaviour">
+						<option value="16">16-bit unsigned</option>
+						<option value="32">32-bit unsigned</option>
+						<option value="noflow">No flow (JavaScript numbers)</option>
+					</select>
 					<br/><br/>
 					Console (readm)
 					<br/>
