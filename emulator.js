@@ -181,7 +181,6 @@ $("#loadbutton").on("click", function() {
 });
 
 $("#runbutton").on("click", function() {
-	zeroRegisters();
 	let count = 4096;
 	running = true;
 	while(running && count != 0){
