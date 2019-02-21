@@ -115,6 +115,23 @@ let processInstruction = function(instruction){
 			console.log("readm");
 			addToConsole(memory[imm]);
 			break;
+		case 8: //mult
+			console.log("mult");
+			register[reg3] = simulateFlow(register[reg1] * register[reg2]);
+			break;
+		case 9: //inc
+			console.log("inc");
+			register[reg1] = simulateFlow(register[reg1] + 1);
+			break;
+		case 10: //dec
+			console.log("dec");
+			register[reg1] = simulateFlow(register[reg1] - 1);
+			break;
+		case 11: //mov5
+			console.log("mov5");
+			alert(memory[register[reg1]]);
+			register[reg1] = memory[register[reg1]];
+			break;
 		case 15: //halt
 			console.log("halt");
 			running = false;
@@ -233,6 +250,22 @@ let updateVisElements = function() {
 			setBoxesVisibleArray([0, 0, 0, 1]);
 			setArrowsVisibleArray(["out<=", "", "", "mem[", "]"]);
 			break;
+		case "mult":
+			setBoxesVisibleArray([1, 1, 1, 0]);
+			setArrowsVisibleArray(["RF[", "]*RF[", "]=>RF[", "]", ""]);
+			break;
+		case "inc":
+			setBoxesVisibleArray([1, 0, 0, 0]);
+			setArrowsVisibleArray(["RF[", "]++", "", "", ""]);
+			break;
+		case "dec":
+			setBoxesVisibleArray([1, 0, 0, 0]);
+			setArrowsVisibleArray(["RF[", "]--", "", "", ""]);
+			break;
+		case "mov5":
+			setBoxesVisibleArray([1, 0, 0, 0]);
+			setArrowsVisibleArray(["RF[", "] <= mem[RF[ (same register) ]]", "", "", ""]);
+			break;
 		case "halt":
 			setBoxesVisibleArray([0, 0, 0, 0]);
 			setArrowsVisibleArray(["", "", "", "", ""]);
@@ -293,6 +326,18 @@ $("#addInstruction").on("click", function(){
 			break;
 		case "readm":
 			pushNewInstruction("7" + "0" + imm);
+			break;
+		case "mult":
+			pushNewInstruction("8" + reg1 + reg2 + reg3);
+			break;
+		case "inc":
+			pushNewInstruction("9" + reg1 + "00");
+			break;
+		case "dec":
+			pushNewInstruction("A" + reg1 + "00");
+			break;
+		case "mov5":
+			pushNewInstruction("B" + reg1 + "00");
 			break;
 		case "halt":
 			pushNewInstruction("F000");
