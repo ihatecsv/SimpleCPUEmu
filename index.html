@@ -14,9 +14,20 @@
 			<div class="row">
 				<div class="col-4" id="ctrlpanel">
 					<h1>ASM</h1>
+					Bus width:
+					<select id="buswidth">
+						<option value="16">16-bit unsigned</option>
+						<option value="32">32-bit unsigned</option>
+					</select>
+					<hr/>
 					<textarea id="procedure" rows=16></textarea>
-					<button id="openInstructionCreator">Open inst. creator</button>
-					<form id="createInstructionForm" class="createInstructionForm" style="display:none;">
+					<hr/>
+					<button id="loadbutton">Load and reset</button>
+					<button id="runbutton">Run</button>
+					<button id="stepbutton">Step</button>
+					<hr/>
+					<button id="openInstructionCreator">Instruction creator</button>
+					<form id="createInstructionForm" style="display:none;">
 						Instruction:
 						<select id="createInstructionOp">
 							<option value="mov1">mov1</option>
@@ -45,20 +56,12 @@
 						<span id="createInstructionContext5"></span>
 						<br/>
 						<button type="button" id="addInstruction">Add instruction</button>
-						<button type="button" id="cancelInstruction">Hide</button>
+						<button type="button" id="cancelInstruction">Close</button>
 					</form>
-					<br/>
-					<button id="loadbutton">Load and reset</button>
-					<button id="runbutton">Run</button>
-					<button id="stepbutton">Step</button>
-					<select id="buswidth">
-						<option value="16">16-bit unsigned</option>
-						<option value="32">32-bit unsigned</option>
-					</select>
-					<br/><br/>
+					<hr/>
 					Console (readm)
 					<br/>
-					<textarea id="console" rows=8 readonly></textarea>
+					<textarea id="console" rows=6 readonly></textarea>
 				</div>
 				<div class="col-4">
 					<h1>Register explorer</h1>

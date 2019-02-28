@@ -1,14 +1,11 @@
+body{
+	text-align:center;
+}
+
 .monotext{
 	font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
 
 .pc{
 	color:red;
-}
-
-.createInstructionForm{
-	margin-top:20px;
-	background-color:#ccc;
-	border-style:dashed;
-	text-align:center;
 }
