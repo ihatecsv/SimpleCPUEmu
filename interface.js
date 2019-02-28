@@ -35,9 +35,9 @@ const presetFormFromURL = function(){
 		$("#procedure").val(procedureText);
 	}
 
-	let flowSetting = (new URL(location)).searchParams.get("flow");
-	if(flowSetting != null){
-		$("#flowbehaviour").val(flowSetting);
+	let widthSetting = (new URL(location)).searchParams.get("width");
+	if(widthSetting != null){
+		$("#buswidth").val(widthSetting);
 	}
 }
 
@@ -282,7 +282,7 @@ $("#stepbutton").on("click", function() {
 $("#ctrlpanel").on('input change', function(){
 	var newURL = location.href.split("?")[0];
 	newURL += "?procedure=" + encodeURIComponent($("#procedure").val());
-	newURL += "&flow=" + encodeURIComponent($("#flowbehaviour").val());
+	newURL += "&width=" + encodeURIComponent($("#buswidth").val());
 	history.replaceState({}, '', newURL);
 });
 
