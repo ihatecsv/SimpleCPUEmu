@@ -14,46 +14,10 @@
 			<div class="row">
 				<div class="col-4" id="ctrlpanel">
 					<h1>ASM</h1>
-					<textarea id="procedure" rows=16>3000
-3101
-3301
-3403
-390A
-3A34
-1332
-1433
-3502
-3702
-3600
-4508
-4676
-5818
-6810
-600C
-5646
-4636
-2A60
-4A1A
-4515
-4403
-4604
-5919
-691A
-600A
-7032
-7033
-7034
-7035
-7036
-7037
-7038
-7039
-703A
-703B
-F000</textarea>
+					<textarea id="procedure" rows=16></textarea>
 					<button id="openInstructionCreator">Open inst. creator</button>
 					<form id="createInstructionForm" class="createInstructionForm" style="display:none;">
-						Instruction: 
+						Instruction:
 						<select id="createInstructionOp">
 							<option value="mov1">mov1</option>
 							<option value="mov2">mov2</option>
@@ -87,10 +51,9 @@ F000</textarea>
 					<button id="loadbutton">Load and reset</button>
 					<button id="runbutton">Run</button>
 					<button id="stepbutton">Step</button>
-					<select id="flowbehaviour">
+					<select id="buswidth">
 						<option value="16">16-bit unsigned</option>
 						<option value="32">32-bit unsigned</option>
-						<option value="noflow">No flow (JavaScript numbers)</option>
 					</select>
 					<br/><br/>
 					Console (readm)
@@ -121,5 +84,6 @@ F000</textarea>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 		<script src="emulator.js"></script>
+		<script src="interface.js"></script>
 	</body>
 </html>

@@ -1,87 +1,153 @@
 class Emulator {
-	constructor(busWidth, registerCount, memoryCount, verbose){
-		this.verbose = verbose;
-		this.internalLog("Initialized!");
-
+	constructor(busWidth, registerCount, memoryCount, stepDelay, handleRunStep = function(){}, handleReadm = function(){}, handleEmuLog = function(){}){
 		this.busWidth = busWidth;
+		if(this.busWidth != 16 && this.busWidth != 32) throw "Invalid bus width! Valid values are 16 and 32!";
 
-		switch(this.busWidth){
-			case 16:
-				this.register = new Uint16Array(registerCount);
-				this.memory = new Uint16Array(memoryCount);
-				this.internalLog("Set bus width to 16 bit!");
-				break;
-			case 32:
-				this.register = new Uint32Array(registerCount);
-				this.memory = new Uint32Array(memoryCount);
-				this.internalLog("Set bus width to 32 bit!");
-				break;
-			default:
-				this.internalLog("Invalid bus width, throwing error!");
-				throw "Invalid bus width! Valid values are 16 and 32!";
-				break;
-		}
-		this.internalLog("Ready!");
+		this.registerCount = registerCount;
+		this.memoryCount = memoryCount;
+		this.stepDelay = stepDelay;
+
+		this.handleRunStep = handleRunStep;
+		this.handleReadm = handleReadm;
+		this.handleEmuLog = handleEmuLog;
+
+		this.pc = 0x0;
+		this.halted = true;
+
+		//TODO: probably unnecessary to do this here
+		this.resetMemory();
+		this.resetRegisters();
+
+		this.handleEmuLog("Emulator created with bus width " + this.busWidth +"!");
 	}
 
-	internalLog(str){
-		if(this.verbose){
-			console.log("%c Emulator: " + str, "color: #F0F");
+	processInstruction(instruction){
+		const op = (instruction >> 12) & 0xf;
+		const r1 = (instruction >> 8) & 0xf;
+		const r2 = (instruction >> 4) & 0xf;
+		const r3 = instruction & 0xf;
+		const imm = instruction & 0xff;
+		this.handleEmuLog("Parsed instruction: OP=0x" + op.toString(16) + ", r1=0x" + r1.toString(16) + ", r2=0x" + r2.toString(16) + ", r3=0x" + r3.toString(16) + ", imm=0x" + imm.toString(16));
+		switch(op){
+			case 0x0: //mov1
+				this.handleEmuLog("Executing mov1!");
+				this.register[r1] = this.memory[imm];
+				break;
+			case 0x1: //mov2
+				this.handleEmuLog("Executing mov2!");
+				this.memory[imm] = this.register[r1];
+				break;
+			case 0x2: //mov3
+				this.handleEmuLog("Executing mov3!");
+				this.memory[this.register[r1]] = this.register[r2];
+				break;
+			case 0x3: //mov4
+				this.handleEmuLog("Executing mov4!");
+				this.register[r1] = imm;
+				break;
+			case 0x4: //add
+				this.handleEmuLog("Executing add!");
+				this.register[r3] = this.register[r1] + this.register[r2];
+				break;
+			case 0x5: //subt
+				this.handleEmuLog("Executing subt!");
+				this.register[r3] = this.register[r1] - this.register[r2];
+				break;
+			case 0x6: //jz
+				this.handleEmuLog("Executing jz!");
+				if(this.register[r1] == 0) this.pc = imm;
+				this.handleEmuLog("Jumped, PC=0x" + this.pc.toString(16));
+				break;
+			case 0x7: //readm
+				this.handleEmuLog("Executing readm!");
+				this.handleReadm(this.memory[imm]);
+				break;
+			case 0x8: //mult
+				this.handleEmuLog("Executing mult!");
+				this.register[r3] = this.register[r1] * this.register[r2];
+				break;
+			case 0x9: //inc
+				this.handleEmuLog("Executing inc!");
+				this.register[r1] = this.register[r1] + 1;
+				break;
+			case 0xa: //dec
+				this.handleEmuLog("Executing dec!");
+				this.register[r1] = this.register[r1] - 1;
+				break;
+			case 0xb: //mov5
+				this.handleEmuLog("Executing mov5!");
+				this.register[r1] = this.memory[this.register[r1]];
+				break;
+			case 0xf: //halt
+				this.handleEmuLog("Executing halt!");
+				this.halted = true;
+				break;
+			default: //invalid op
+				this.handleEmuLog("Invalid operation 0x" + op.toString(16) + ", ignoring!");
+				break;
 		}
 	}
 
-	loadProgram(program){
-		if(program.length > this.memory.length){
-			this.internalLog("Program too long, ignoring!");
+	step(){
+		if(this.halted){
+			this.handleEmuLog("CPU has halted, ignoring step!", true);
 			return;
 		}
+		this.handleEmuLog("Handling new step!", true);
+		const instruction = this.memory[this.pc];
+		this.handleEmuLog("Fetched instruction at PC=0x" + this.pc.toString(16) + ": 0x" + instruction.toString(16));
+		this.pc++;
+		this.processInstruction(instruction);
+		this.handleRunStep();
+	}
+
+	run(){
+		if(this.halted){
+			this.handleEmuLog("CPU has halted!", true);
+			return;
+		}
+		this.step();
+		const objThis = this;
+		setTimeout(function(){
+			objThis.run(this.stepDelay);
+		}, this.stepDelay);
+	}
+
+	load(program){
+		if(program.length > this.memory.length){
+			this.handleEmuLog("Program too long, ignoring!");
+			return;
+		}
+		this.pc = 0x0;
+		this.resetMemory();
+		this.resetRegisters();
+		this.handleEmuLog("Reset machine state!", true);
 		for(let i = 0; i < program.length; i++){
 			this.memory[i] = program[i];
 		}
-		this.internalLog("Program loaded into memory! (" + program.length + " instructions)");
+		this.handleEmuLog("Program loaded into memory! (" + program.length + " instructions)");
+		this.halted = false;
+	}
+
+	resetMemory(){
+		switch(this.busWidth){
+			case 16:
+				this.memory = new Uint16Array(this.memoryCount);
+				break;
+			case 32:
+				this.memory = new Uint32Array(this.memoryCount);
+				break;
+		}
+	}
+
+	resetRegisters(){
+		switch(this.busWidth){
+			case 16:
+				this.register = new Uint16Array(this.registerCount);
+				break;
+			case 32:
+				this.register = new Uint32Array(this.registerCount);
+				break;
+		}
 	}
 }
-
-let emu = new Emulator(16, 16, 256, true);
-
-let program = new Uint16Array([
-	0x3000,
-	0x3101,
-	0x3301,
-	0x3403,
-	0x390A,
-	0x3A34,
-	0x1332,
-	0x1433,
-	0x3502,
-	0x3702,
-	0x3600,
-	0x4508,
-	0x4676,
-	0x5818,
-	0x6810,
-	0x600C,
-	0x5646,
-	0x4636,
-	0x2A60,
-	0x4A1A,
-	0x4515,
-	0x4403,
-	0x4604,
-	0x5919,
-	0x691A,
-	0x600A,
-	0x7032,
-	0x7033,
-	0x7034,
-	0x7035,
-	0x7036,
-	0x7037,
-	0x7038,
-	0x7039,
-	0x703A,
-	0x703B,
-	0xF000
-]);
-
-emu.loadProgram(program);
