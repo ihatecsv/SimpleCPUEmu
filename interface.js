@@ -46,6 +46,14 @@ const presetFormFromURL = function(){
 	}
 }
 
+const updateURL = function(){
+	var newURL = location.href.split("?")[0];
+	newURL += "?procedure=" + encodeURIComponent($("#procedure").val());
+	newURL += "&width=" + encodeURIComponent($("#buswidth").val());
+  newURL += "&delay=" + encodeURIComponent($("#stepdelay").val());
+	history.replaceState({}, '', newURL);
+}
+
 //Populate memory table and selectors
 const populateMemoryFields = function(){
   for(let i = 0; i < memoryCount; i++){
@@ -193,6 +201,7 @@ const pushNewInstruction = function(instructionString){
 	const textArea = $("#procedure");
 	const needsNewLine = textArea.val() != "" && textArea.val().substr(-1) != "\n";
 	textArea.val(textArea.val() + (needsNewLine ? "\n" : "") + instructionString + "\n");
+  updateURL();
 }
 
 const handleCreatedInstruction = function(){
@@ -293,13 +302,7 @@ $("#stepbutton").on("click", function() {
 });
 
 //Update URL when settings are changed
-$("#ctrlpanel").on('input change', function(){
-	var newURL = location.href.split("?")[0];
-	newURL += "?procedure=" + encodeURIComponent($("#procedure").val());
-	newURL += "&width=" + encodeURIComponent($("#buswidth").val());
-  newURL += "&delay=" + encodeURIComponent($("#stepdelay").val());
-	history.replaceState({}, '', newURL);
-});
+$("#ctrlpanel").on("input change", updateURL);
 
 $("#cancelInstruction").on("click", function(){
 	$("#createInstructionForm").hide();
