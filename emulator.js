@@ -98,15 +98,16 @@ class Emulator {
 		this.handleEmuLog("Fetched instruction at PC=0x" + this.pc.toString(16) + ": 0x" + instruction.toString(16));
 		this.pc++;
 		this.processInstruction(instruction);
-		this.handleRunStep();
 	}
 
 	run(){
 		if(this.halted){
 			this.handleEmuLog("CPU has halted!", true);
+			this.handleRunStep();
 			return;
 		}
 		this.step();
+		if(this.stepDelay != 0) this.handleRunStep();
 		const objThis = this;
 		setTimeout(function(){
 			objThis.run(this.stepDelay);

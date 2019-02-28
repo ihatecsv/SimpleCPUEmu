@@ -39,6 +39,11 @@ const presetFormFromURL = function(){
 	if(widthSetting != null){
 		$("#buswidth").val(widthSetting);
 	}
+
+  let delaySetting = (new URL(location)).searchParams.get("delay");
+	if(delaySetting != null){
+		$("#stepdelay").val(delaySetting);
+	}
 }
 
 //Populate memory table and selectors
@@ -90,6 +95,12 @@ const changeBusWidth = function(){
 			break;
 	}
   resetEmulator();
+}
+
+const changeStepDelay = function(){
+  const delay = parseInt($("#stepdelay").val());
+	stepDelay = delay;
+  emu.stepDelay = delay;
 }
 
 const setBoxesVisibleArray = function(showArray){
@@ -243,6 +254,7 @@ const handleCreatedInstruction = function(){
 presetFormFromURL();
 resetEmulator();
 changeBusWidth();
+changeStepDelay();
 clearReadm();
 populateMemoryFields();
 populateRegisterFields();
@@ -256,6 +268,8 @@ $("#openInstructionCreator").on("click", function(){
 });
 
 $("#buswidth").on("change", changeBusWidth);
+
+$("#stepdelay").on("change", changeStepDelay);
 
 $("#loadbutton").on("click", function() {
 	clearReadm();
@@ -283,6 +297,7 @@ $("#ctrlpanel").on('input change', function(){
 	var newURL = location.href.split("?")[0];
 	newURL += "?procedure=" + encodeURIComponent($("#procedure").val());
 	newURL += "&width=" + encodeURIComponent($("#buswidth").val());
+  newURL += "&delay=" + encodeURIComponent($("#stepdelay").val());
 	history.replaceState({}, '', newURL);
 });
 
