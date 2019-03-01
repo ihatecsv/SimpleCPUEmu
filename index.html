@@ -26,44 +26,46 @@
 					</div>
 					<hr/>
 					<textarea id="procedure" rows=12></textarea>
-					<button class="mt-2" id="openInstructionCreator">Instruction creator</button>
-					<form class="mt-2" id="createInstructionForm" style="display:none;">
-						Instruction:
-						<select id="createInstructionOp">
-							<option value="mov1">mov1</option>
-							<option value="mov2">mov2</option>
-							<option value="mov3">mov3</option>
-							<option value="mov4">mov4</option>
-							<option value="mov5">mov5</option>
-							<option value="add">add</option>
-							<option value="subt">subt</option>
-							<option value="mult">mult</option>
-							<option value="inc">inc</option>
-							<option value="dec">dec</option>
-							<option value="jz">jz</option>
-							<option value="readm">readm</option>
-							<option value="halt">halt</option>
-						</select>
-						<br/>
-						<span id="createInstructionContext1"></span>
-						<select id="createInstructionRegister1"></select>
-						<span id="createInstructionContext2"></span>
-						<select id="createInstructionRegister2"></select>
-						<span id="createInstructionContext3"></span>
-						<select id="createInstructionRegister3"></select>
-						<span id="createInstructionContext4"></span>
-						<select id="createInstructionImm"></select>
-						<span id="createInstructionContext5"></span>
-						<br/>
-						<button type="button" id="addInstruction">Add instruction</button>
-						<button type="button" id="cancelInstruction">Close</button>
-					</form>
+					<div class="mt-2">
+						<button id="openInstructionCreator">Instruction creator</button>
+						<form id="createInstructionForm" style="display:none;">
+							Instruction:
+							<select id="createInstructionOp">
+								<option value="mov1">mov1</option>
+								<option value="mov2">mov2</option>
+								<option value="mov3">mov3</option>
+								<option value="mov4">mov4</option>
+								<option value="mov5">mov5</option>
+								<option value="add">add</option>
+								<option value="subt">subt</option>
+								<option value="mult">mult</option>
+								<option value="inc">inc</option>
+								<option value="dec">dec</option>
+								<option value="jz">jz</option>
+								<option value="readm">readm</option>
+								<option value="halt">halt</option>
+							</select>
+							<br/>
+							<span id="createInstructionContext1"></span>
+							<select id="createInstructionRegister1"></select>
+							<span id="createInstructionContext2"></span>
+							<select id="createInstructionRegister2"></select>
+							<span id="createInstructionContext3"></span>
+							<select id="createInstructionRegister3"></select>
+							<span id="createInstructionContext4"></span>
+							<select id="createInstructionImm"></select>
+							<span id="createInstructionContext5"></span>
+							<br/>
+							<button type="button" id="addInstruction">Add instruction</button>
+							<button type="button" id="cancelInstruction">Close</button>
+						</form>
+					</div>
 					<hr/>
 					<button id="loadbutton">Load/reset</button>
 					<button id="runbutton">Run</button>
 					<button id="stepbutton">Step</button>
 					<br/>
-					<div class="status">Status: <span id="status"><span class="badge badge-secondary">Initialized</span></span></div>
+					<div class="mt-2">Status: <span id="status"><span class="badge badge-secondary">Initialized</span></span></div>
 					<hr/>
 					Console (readm)
 					<br/>
