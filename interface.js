@@ -306,7 +306,7 @@ $("#runbutton").on("click", function() {
   $("#loadbutton").attr("disabled", true);
   $("#runbutton").attr("disabled", true);
   $("#stepbutton").attr("disabled", true);
-  $("#status").html("<span class='badge badge-warning'>Running</span>");
+  $("#status").html("<span class='badge badge-primary'>Running</span>");
   emu.run();
   updateRegisters();
   updateMemory();
