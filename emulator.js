@@ -104,6 +104,7 @@ class Emulator {
 	run(){
 		if(this.halted){
 			this.handleEmuLog("CPU has halted!", true);
+			this.handleRunStep();
 			return;
 		}
 		this.step();
