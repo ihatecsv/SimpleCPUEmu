@@ -7,6 +7,12 @@ let emu;
 const handleRunStep = function(){
   updateRegisters();
   updateMemory();
+  if(emu.halted){
+    $("#stepbutton").attr("disabled", true);
+    $("#runbutton").attr("disabled", true);
+    $("#loadbutton").attr("disabled", false);
+    $("#status").html("<span class='badge badge-danger'>Halted</span>");
+  }
 }
 
 const handleReadm = function(str){
@@ -260,6 +266,9 @@ const handleCreatedInstruction = function(){
 	$("#openInstructionCreator").show();
 }
 
+$("#stepbutton").attr("disabled", true);
+$("#runbutton").attr("disabled", true);
+
 presetFormFromURL();
 resetEmulator();
 changeBusWidth();
@@ -287,9 +296,17 @@ $("#loadbutton").on("click", function() {
 
   updateRegisters();
   updateMemory();
+
+  $("#stepbutton").attr("disabled", false);
+  $("#runbutton").attr("disabled", false);
+  $("#status").html("<span class='badge badge-success'>Ready</span>");
 });
 
 $("#runbutton").on("click", function() {
+  $("#loadbutton").attr("disabled", true);
+  $("#runbutton").attr("disabled", true);
+  $("#stepbutton").attr("disabled", true);
+  $("#status").html("<span class='badge badge-warning'>Running</span>");
   emu.run();
   updateRegisters();
   updateMemory();

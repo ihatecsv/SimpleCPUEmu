@@ -19,18 +19,15 @@
 						<option value="16">16-bit unsigned</option>
 						<option value="32">32-bit unsigned</option>
 					</select>
-					<hr/>
-					Step delay:
-					<input type="number" id="stepdelay" value="100" min="0"/>ms
+					<br/>
+					<div class="mt-2">
+						Step delay:
+						<input type="number" id="stepdelay" value="100" min="0"/>ms
+					</div>
 					<hr/>
 					<textarea id="procedure" rows=12></textarea>
-					<hr/>
-					<button id="loadbutton">Load and reset</button>
-					<button id="runbutton">Run</button>
-					<button id="stepbutton">Step</button>
-					<hr/>
-					<button id="openInstructionCreator">Instruction creator</button>
-					<form id="createInstructionForm" style="display:none;">
+					<button class="mt-2" id="openInstructionCreator">Instruction creator</button>
+					<form class="mt-2" id="createInstructionForm" style="display:none;">
 						Instruction:
 						<select id="createInstructionOp">
 							<option value="mov1">mov1</option>
@@ -61,6 +58,12 @@
 						<button type="button" id="addInstruction">Add instruction</button>
 						<button type="button" id="cancelInstruction">Close</button>
 					</form>
+					<hr/>
+					<button id="loadbutton">Load/reset</button>
+					<button id="runbutton">Run</button>
+					<button id="stepbutton">Step</button>
+					<br/>
+					<div class="status">Status: <span id="status"><span class="badge badge-secondary">Initialized</span></span></div>
 					<hr/>
 					Console (readm)
 					<br/>
